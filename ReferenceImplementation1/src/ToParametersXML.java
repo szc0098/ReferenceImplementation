@@ -14,7 +14,12 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
+/**
+ * 
+ * Stores the experiment design specification in parameters.xml
+ * which is used to run RePast project.
+ *
+ */
 public class ToParametersXML {
 
 	  
@@ -30,7 +35,10 @@ public class ToParametersXML {
 	  String []nodeName ={"percentLikeNeighbors","initialNumAgents","worldWidth","minDeathAge", "maxDeathAge","worldHeight"};
 	  String []nodeDisplayName ={"Percent Like Neighbors","Initial Num Agents","World Width","Min Death Age", "Max Death Age","World Height"};
 
-	  
+	  /**
+	   * It stores the factors in the parameters.xml
+	   * @param factor The factor input specified for the experiment run
+	   */
 	  
 	  public void doit (Factor factor) {
 		    try{
@@ -53,6 +61,10 @@ public class ToParametersXML {
 		       }
 		    catch (Exception e) { e.printStackTrace(); }
 		  }
+	  /**
+	   * Initializes the xml file
+	   * @throws ParserConfigurationException when there is a serious error in the parsing configuration
+	   */
 	  
 	  public void initXML() throws ParserConfigurationException{
 		    
@@ -64,6 +76,11 @@ public class ToParametersXML {
 		    xmldoc = builder.newDocument();
 		    root = xmldoc.getDocumentElement();
 		  }
+	  
+	  /**
+	   * Creates the nodes and stores the factor in it
+	   * @param factor The factor input specified for the experiment run
+	   */
 	  
 	  public void process(Factor factor) {
 		  try{
@@ -104,6 +121,11 @@ public class ToParametersXML {
 		  
 		  
 		  }
+	  /**
+	   * Extracts the factor value and returns it in String format
+	   * @param factor The factor input specified for the experiment run
+	   * @return returns the factor value as a String
+	   */
 
 	private String factorValue(Factor factor) {
 		Values v = factor.getFactorValues();
@@ -137,7 +159,12 @@ public class ToParametersXML {
 		 }
 		return nodeValue;
 	}
-	  
+	 
+	/**
+	 * Writes the data in the XML file
+	 * @throws TransformerConfigurationException When there is a serious configuration error.
+	 * @throws TransformerException When there is an exceptional condition that occurred during the transformation process
+	 */
 	  public void writeXML() throws TransformerConfigurationException,TransformerException {
 		  DOMSource domSource = new DOMSource(xmldoc);
 		  TransformerFactory tf = TransformerFactory.newInstance();

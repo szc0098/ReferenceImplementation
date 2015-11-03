@@ -15,8 +15,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
+/**
+ * 
+ * It modifies the file sink in RePast to update the output file location
+ *
+ */
 public class FileSinkModifier {
+	
+	/**
+	 * 
+	 * It modifies the file sink in RePast to update the output file location
+	 * 
+	 */
 	public void startModifier(String output){
 	try{
 		String filepath = "C:/Users/sritika/Documents/Research Project/Development/RepastSimphony/Schelling/Schelling.rs/repast.simphony.action.file_sink_2.xml";
