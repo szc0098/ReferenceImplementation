@@ -38,12 +38,47 @@ public class HypothesisTesting {
 	{
 		parseXmlFile();
 		String ltlFormula = getFormulaFromXml();
-		String[] placeholders = {"P", "S", "R", "X", "Z"};
-		for(int i = 0; i < query.getEvents().size(); i++)//problem: if the text we replace has a capital P, S, etc in it, we'll replace stuff we shouldn't
+		char[] placeholders = {'P', 'S', 'R', 'Z'};
+		boolean formulaComplete = false;
+		for(int i = 0; i < ltlFormula.length(); i++)
 		{
-			ltlFormula = ltlFormula.replaceAll(placeholders[i], query.getEvents().get(i));
+			if(formulaComplete)
+			{
+				break;
+			}
+			for(int j = 0; j < placeholders.length; j++)
+			{
+				if(ltlFormula.charAt(i) == placeholders[j])
+				{
+					String front = ltlFormula.substring(0, i);
+					String back = processSubstring(ltlFormula.substring(i + 1));
+					ltlFormula = front + query.getEvents().get(j) + back;
+					formulaComplete = true;
+					break;
+				}
+			}
 		}
 		return ltlFormula;
+	}
+	
+	private String processSubstring(String backIn)
+	{
+		String output = backIn;
+		char[] placeholders = {'P', 'S', 'R', 'X', 'Z'};
+		for(int i = 0; i < backIn.length(); i++)
+		{
+			for(int j = 0; j < placeholders.length; j++)
+			{
+				if(backIn.charAt(i) == placeholders[j])
+				{
+					String front = backIn.substring(0, i);
+					String back = processSubstring(backIn.substring(i + 1));
+					output = front + query.getEvents().get(j) + back;
+					
+				}
+			}
+		}
+		return output;
 	}
 
 	/**
@@ -117,7 +152,7 @@ public class HypothesisTesting {
 			for(int i = 0 ; i < nl.getLength();i++) 
 			{
 				Element el = (Element)nl.item(i);
-				formula = getTextValue(el, "Globally");
+				formula = getTextValue(el, query.getPostfix());
 			}
 		}
 		return formula;

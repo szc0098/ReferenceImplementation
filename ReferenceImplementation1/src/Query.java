@@ -6,9 +6,15 @@ public class Query {
 	private ArrayList<String> events = new ArrayList<String>();
 	private String query;
 	private String patternType;
+	private boolean hasPostfix = false;
+	private String postfix = "Globally";
+	private String postfixIdentifier;
 
 	public final String[] patternIdentifier = {"absent", "eventually exists", "always exists", "precedes", "leads to"};
 	public final String[] patterns = {"Absence", "Existence", "Universality", "Precedence", "Response"};
+
+	public final String[] postfixIdentifiers = {"before", "until", "between", "after"};
+	public final String[] postfixes = {"Before", "AfterUntil", "Between", "After"};
 
 	/**
 	 * Creates a new query object.
@@ -18,10 +24,9 @@ public class Query {
 	public Query(String queryIn)
 	{
 		this.query = queryIn;
-		detectPattern();
 		detectEvents();
 	}
-	
+
 	/**
 	 * Helper function that detects the type of pattern the query is by looking for keywords.
 	 */
@@ -35,37 +40,131 @@ public class Query {
 			}
 		}
 	}
-	
+
+	/**
+	 * Helper function that detects if the pattern has a postfix by looking for keywords.
+	 */
+	private void detectPostfix()
+	{
+		for(int i = 0; i < postfixIdentifiers.length; i++)
+		{
+			if(query.contains(postfixIdentifiers[i]))
+			{
+				postfix = postfixes[i];
+				postfixIdentifier = postfixIdentifiers[i];
+				hasPostfix = true;
+			}
+		}
+	}
+
 	/**
 	 * Helper function that detects the events in the query by searching before and after the pattern keywords
+	 * Calls detectPattern and detectPostfix because they are preconditions.
 	 */
 	private void detectEvents()
 	{
+		detectPattern();
+		detectPostfix();
 		switch(patternType)
 		{
 		case "Absence":
-			events.add(query.substring(0, query.indexOf("is") - 1));
+			String[] primaryEvents = {query.substring(0, query.indexOf("is") - 1)};
+			addPostfix(primaryEvents);
 			break;
 		case "Existence":
-			events.add(query.substring(0, query.indexOf("eventually") - 1));
+			String[] primaryEvents1 = {query.substring(0, query.indexOf("eventually") - 1)};
+			addPostfix(primaryEvents1);
 			break;
 		case "Universality":
-			events.add(query.substring(0, query.indexOf("always") - 1));
+			String[] primaryEvents2 = {query.substring(0, query.indexOf("always") - 1)};
+			addPostfix(primaryEvents2);
 			break;
 		case "Precedence":
-			events.add(query.substring(0, query.indexOf("precedes") - 1));
-			events.add(query.substring(query.indexOf("precedes")+ 9));
+			String firstEvent = query.substring(0, query.indexOf("precedes") - 1);
+			String secondEvent;
+			if(hasPostfix)
+			{
+				secondEvent = query.substring(query.indexOf("precedes") + 9, query.indexOf(postfixIdentifier) - 1);
+			}
+			else
+			{
+				secondEvent = query.substring(query.indexOf("precedes") + 9);
+			}
+			String[] primaryEvents3 = {firstEvent, secondEvent};//untested, fear of nulls
+			addPostfix(primaryEvents3);
 			break;
 		case "Response":
-			events.add(query.substring(0, query.indexOf("leads") - 1));
-			events.add(query.substring(query.indexOf("to") + 3));
+			String firstEvent1 = query.substring(0, query.indexOf("leads") - 1);
+			String secondEvent1;
+			if(hasPostfix)
+			{
+				secondEvent1 = query.substring(query.indexOf("to") + 3, query.indexOf(postfixIdentifier) - 1);
+			}
+			else
+			{
+				secondEvent1 = query.substring(query.indexOf("to") + 3);
+			}
+			String[] primaryEvents4 = {firstEvent1, secondEvent1};//untested, fear of nulls
+			addPostfix(primaryEvents4);
 			break;
 		default:
 			break;
 
 		}
 	}
-	
+
+	private void addPostfix(String[] primaryEvents)
+	{
+		switch(postfix)
+		{
+		case "Before":
+			addPrimaryEvents(primaryEvents);
+			events.add(query.substring(query.indexOf("before")));
+			break;
+		case "AfterUntil":
+			addPrimaryEvents(primaryEvents);
+			events.add(query.substring(query.indexOf("after") + 6, query.indexOf("until") - 1));
+			events.add(query.substring(query.indexOf("until") + 6));
+			break;
+		case "Between":
+			addPrimaryEvents(primaryEvents);
+			events.add(query.substring(query.indexOf("between") + 8, query.indexOf("and") - 1));
+			events.add(query.substring(query.indexOf("and") + 4));
+			break;
+		case "After":
+			addPrimaryEvents(primaryEvents);
+			events.add(query.substring(query.indexOf("after")));
+			break;
+		default:
+			addPrimaryEvents(primaryEvents);
+			break;
+		}
+	}
+
+	private void addPrimaryEvents(String[] eventsIn)
+	{
+		for(int i = 0; i < eventsIn.length; i++)
+		{
+			events.add(eventsIn[i]);
+		}
+	}
+
+	public boolean hasPostfix() {
+		return hasPostfix;
+	}
+
+	public void setHasPostfix(boolean hasPostfix) {
+		this.hasPostfix = hasPostfix;
+	}
+
+	public String getPostfix() {
+		return postfix;
+	}
+
+	public void setPostfix(String postfix) {
+		this.postfix = postfix;
+	}
+
 	/**
 	 * Gets the pattern type
 	 * 
@@ -94,9 +193,9 @@ public class Query {
 	}
 
 	/**
-	 * Sets the patterns type
+	 * Sets the list of events
 	 * 
-	 * @param patternType The name of the new specification pattern to be used in the query
+	 * @param e the new list of events
 	 */
 	public void setEvents(ArrayList<String> e) {
 		this.events = e;
