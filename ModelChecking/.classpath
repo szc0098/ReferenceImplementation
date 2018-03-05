@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/sritika/Downloads/jung2-2_0_1.zip"/>
+	<classpathentry kind="lib" path="C:/RepastSimphony-2.2/eclipse/plugins/com.google.guava_11.0.2.v201303041551.jar" sourcepath="C:/RepastSimphony-2.2/eclipse/plugins/com.google.guava_11.0.2.v201303041551.jar">
+		<accessrules>
+			<accessrule kind="accessible" pattern="com/google/common/annotations/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/base/*"/>
+			<accessrule kind="discouraged" pattern="com/google/common/base/internal/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/cache/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/collect/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/eventbus/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/hash/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/io/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/math/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/net/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/primitives/*"/>
+			<accessrule kind="accessible" pattern="com/google/common/util/concurrent/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/sritika/Downloads/jars/jung-algorithms-2.0.1.jar.zip"/>
+	<classpathentry kind="lib" path="C:/Users/sritika/Downloads/jars/jung-graph-impl-2.0.jar.zip"/>
+	<classpathentry kind="lib" path="C:/Users/sritika/Downloads/jars/jung-io-2.0.1.jar.zip"/>
+	<classpathentry kind="lib" path="C:/Users/sritika/Downloads/jars/jung-visualization-2.0.1.jar.zip"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
